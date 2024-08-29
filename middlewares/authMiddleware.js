@@ -1,6 +1,6 @@
-const User = require("../models/usermodel");
 const jwt = require("jsonwebtoken");
 const asyncHandler = require("express-async-handler");
+const User = require("../models/usermodel");
 
 const authMiddleware = asyncHandler(async (req, res, next) => {
     let token;
@@ -12,13 +12,12 @@ const authMiddleware = asyncHandler(async (req, res, next) => {
                 const user = await User.findById(decoded?.id);
                 req.user = user;
                 next();
-                console.log(decoded)
             }
         } catch (error) {
-            throw new Error(error);
+            throw new Error("Invalid token");
         }
     } else {
-        throw new Error("There is no token attached to header");
+        throw new Error("No token provided");
     }
 });
 
